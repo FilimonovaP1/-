@@ -69,7 +69,8 @@ class Snake(GameObject):
         """Обновляет направление движения змейки."""
         if self.next_direction:
             # Запрещаем движение в противоположном направлении
-            if (self.next_direction[0] * -1, self.next_direction[1] * -1) != self.direction:
+            opposite = (self.next_direction[0] * -1, self.next_direction[1] * -1)
+            if opposite != self.direction:
                 self.direction = self.next_direction
             self.next_direction = None
 
@@ -77,17 +78,17 @@ class Snake(GameObject):
         """Обновляет позицию змейки, добавляя новую голову."""
         head_x, head_y = self.get_head_position()
         dx, dy = self.direction
-        
+
         # Вычисляем новые координаты головы
         new_head = (head_x + dx * GRID_SIZE, head_y + dy * GRID_SIZE)
-        
+
         # Проход сквозь стены (телепортация)
         new_x = new_head[0] % SCREEN_WIDTH
         new_y = new_head[1] % SCREEN_HEIGHT
         new_head = (new_x, new_y)
 
         self.positions.insert(0, new_head)
-        
+
         # Если длина не увеличилась, удаляем хвост
         if len(self.positions) > self.length:
             self.positions.pop()
